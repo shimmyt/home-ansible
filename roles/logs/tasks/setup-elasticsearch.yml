@@ -1,0 +1,35 @@
+- name: install elasticsearch
+  apt:
+    name: elasticsearch
+    update_cache: yes
+
+- name: Create Data Directories
+  file: path={{ item }} state=directory owner={{ es_user }} group={{ es_group }}
+  with_items:
+    - "{{ es_data_dirs }}"
+    - "{{ es_log_dir }}"
+
+- name: mount elasticsearch data folder
+  mount:
+    path: "{{ es_data_dirs }}"
+    src: /dev/{{ vg_name }}/{{ elasticsearchlv_name }}
+    fstype: ext4
+    state: mounted
+
+- name: set permissions on mount
+  file:
+    path: "{{ es_data_dirs }}"
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0755
+
+- name: Copy Elasticsearch Configuration File
+  become: yes
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml owner={{ es_user }} group={{ es_group }} mode=0644 force=yes
+  register: system_change
+  notify: restart elasticsearch
+
+- name: enable elasticsearch
+  systemd:
+    name: elasticsearch
+    enabled: yes

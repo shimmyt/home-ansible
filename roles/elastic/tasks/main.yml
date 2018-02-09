@@ -1,0 +1,16 @@
+---
+- name: install elasticsearch requirements
+  apt:
+    name: apt-transport-https
+
+- name: import elasticsearch pgp key
+  apt_key: 
+    id: 46095ACC8548582C1A2699A9D27D666CD88E42B4
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: setup elasticsearch repo
+  apt_repository: 
+    repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
+    state: present
+    filename: elastic-6.x

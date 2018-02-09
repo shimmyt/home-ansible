@@ -1,0 +1,25 @@
+---
+- name: Create Elasticsearch VG
+  lvol:
+    vg: "{{ vg_name }}"
+    lv: "{{ elasticsearchlv_name }}"
+    size: "{{ elasticsearch_size }}"
+
+- name: format elasticsearch drive
+  filesystem:
+    fstype: ext4
+    dev: /dev/{{ vg_name }}/{{ elasticsearchlv_name }}
+  
+- name: install elasticsearch requirements
+  apt:
+    name: openjdk-8-jre
+    update_cache: yes
+
+- name: Setup elasticsearch
+  import_tasks: setup-elasticsearch.yml
+
+- name: Setup kibana
+  import_tasks: setup-kibana.yml
+
+- name: Setup logstash
+  import_tasks: setup-logstash.yml

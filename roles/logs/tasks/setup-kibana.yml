@@ -1,0 +1,16 @@
+---
+- name: install kibana
+  apt:
+    name: kibana
+    update_cache: yes
+
+- name: enable kibana
+  systemd:
+    name: kibana
+    enabled: yes
+
+- name: Copy Kibana Configuration File
+  become: yes
+  template: src=kibana.yml.j2 dest=/etc/kibana/kibana.yml owner={{ es_user }} group={{ es_group }} mode=0644 force=yes
+  register: system_change
+  notify: restart kibana

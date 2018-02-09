@@ -1,0 +1,16 @@
+---
+- name: install logstash
+  apt:
+    name: logstash
+    update_cache: yes
+
+- name: enable logstash
+  systemd:
+    name: logstash
+    enabled: yes
+
+- name: Copy Logstash Configuration File
+  become: yes
+  template: src=rsyslog.conf.j2 dest=/etc/logstash/conf.d/rsyslog.conf owner={{ es_user }} group={{ es_group }} mode=0644 force=yes
+  register: system_change
+  notify: restart logstash

@@ -1,0 +1,6 @@
+---
+es_data_dirs: "/var/lib/elasticsearch/data"
+es_log_dir: "/var/log/elasticsearch"
+vg_name: primaryvg
+elasticsearchlv_name: elasticsearch
+elasticsearch_size: 2t

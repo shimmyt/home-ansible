@@ -1,0 +1,11 @@
+---
+- name: Does Calibre need to be updated
+  shell: calibre-debug -c "from calibre.gui2.update import get_newest_version; from calibre.constants import numeric_version; raise SystemExit(int(numeric_version < get_newest_version()))"
+  register: calibre_upgrade
+  ignore_errors: true
+  tags: testcalibre
+
+- name: Debug calibre_upgrade
+  debug:
+    var: calibre_upgrade
+  tags: testcalibre

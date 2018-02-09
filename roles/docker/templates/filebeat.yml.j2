@@ -1,0 +1,8 @@
+filebeat.prospectors:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/*.log
+
+output.logstash:
+  hosts: ["{{ logstash_server }}:{{ logstash_syslog_port }}"]

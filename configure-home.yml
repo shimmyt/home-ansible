@@ -1,0 +1,26 @@
+---
+- hosts: 
+  - all
+  roles:
+     - common
+
+- hosts: 
+  - home-logs
+  - home-docker
+  roles:
+    - elastic
+
+- hosts: 
+  - home-logs
+  roles: 
+    - logs
+
+- hosts: 
+  - home-docker
+  roles:
+    - docker
+
+- hosts:
+  - home-media
+  roles:
+    - books

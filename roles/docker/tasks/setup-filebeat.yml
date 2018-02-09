@@ -1,0 +1,16 @@
+---
+- name: install filebeat
+  apt:
+    name: filebeat
+    update_cache: yes
+
+- name: enable kibana
+  systemd:
+    name: filebeat
+    enabled: yes
+
+- name: Copy Kibana Configuration File
+  become: yes
+  template: src=filebeat.yml.j2 dest=/etc/filebeat/filebeat.yml mode=0644 force=yes
+  register: system_change
+  notify: restart filebeat
